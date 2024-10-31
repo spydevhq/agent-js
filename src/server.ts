@@ -1,11 +1,11 @@
 import express from 'express'
-import * as debug from './debug'
+// import * as debug from './debug'
 
-debug.init()
+// debug.init()
 
 const app = express()
 
-app.use(debug.middleware)
+// app.use(debug.middleware)
 
 app.get('/hello/:greet', (req, res) => {
     console.log('hello')

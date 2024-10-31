@@ -1,12 +1,12 @@
-// import { init } from './index.ts'
+// import { init } from './index'
 // init()
-import * as _ from './debug.js'
+import '../debug'
 
 setTimeout(() => {
     const x = 42
     console.log('a')
     console.log('running...')
-    // debugger
+    // debugger;
     console.log('resuming...')
     console.log('b')
-}, 1000)
+}, 2000)
