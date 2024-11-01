@@ -1,11 +1,15 @@
 import express from 'express'
-// import * as debug from './debug'
-
-// debug.init()
+import { middleware } from '.'
+import './debug'
 
 const app = express()
 
-// app.use(debug.middleware)
+app.use(middleware)
+
+app.use((req, res, next) => {
+    console.log('params', req.params)
+    next()
+})
 
 app.get('/hello/:greet', (req, res) => {
     console.log('hello')

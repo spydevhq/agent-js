@@ -4,12 +4,12 @@ import { isMainThread, parentPort, Worker } from 'node:worker_threads';
 
 console.log('Running in', isMainThread ? 'Main thread' : 'Worker thread')
 
-
 if (isMainThread) {
     const worker = new Worker(__filename)
     worker.on('error', (err) => console.error('Worker error', err))
+    worker.on('exit', (code) => console.log('Worker exited', code))
 } else {
-    parentPort?.on('message', () => {})
+    parentPort?.on('message', () => {}) // stop worker from dying early
 
     const session = new Session();
     let debuggerEnabled = false
@@ -31,21 +31,19 @@ if (isMainThread) {
 
             const res = await session.post('Debugger.getScriptSource', { scriptId: script.scriptId })
             // console.log(script.scriptId, scripts[script.scriptId], res)
-            console.log(script.scriptId, script.url)
+            process._rawDebug(script.scriptId, script.url)
             if (scripts[script.scriptId].url.endsWith('test.js')) {
                 process._rawDebug('Setting breakpoint', debuggerEnabled)
 
                 // session.post('Runtime.evaluate', { expression: 'console.log("aiwjefoijwe fSetting breakpoint")' });
 
-                try {
-                    const bp = await session.post('Debugger.setBreakpointByUrl', {
-                        url: script.url,
+                const bp = await session.post('Debugger.setBreakpoint', {
+                    location: {
+                        scriptId: script.scriptId,
                         lineNumber: 7,
-                    });
-                    process._rawDebug('Breakpoint set', bp);
-                } catch (err) {
-                    process._rawDebug('Error setting breakpoint', err);
-                }
+                    }
+                })
+                process._rawDebug('Breakpoint set', bp);
 
                 // session.post('Debugger.setBreakpoint', {
                 //     location: {
@@ -68,36 +66,88 @@ if (isMainThread) {
     })
 
     session.on('Debugger.paused', async (msg) => {
-        process._rawDebug('Paused in function', msg.params.callFrames[0].functionName)
-        // console.log(msg)
-        await session.post('Debugger.resume')
+        try {
+            process._rawDebug(`⏸️ Paused in function[${msg.params.callFrames[0].functionName}] reason[${msg.params.reason}]`)
+            process._rawDebug(msg.params.callFrames[0])
+            process._rawDebug(msg)
+            process._rawDebug(msg.params.callFrames[0].scopeChain)
 
-        // for (const frame of msg.params.callFrames) {
-        //     console.log(frame)
-        //     const localScope = frame.scopeChain.find((scope) => scope.type === "local");
-        //     if (localScope?.object?.objectId) {
-        //         // this is synchronous, somehow?
-        //         session.post("Runtime.getProperties", {
-        //             objectId: localScope.object.objectId,
-        //             ownProperties: true,
-        //         }, (err, result) => {
-        //             // for (let i = 0; i < 10_000_000; ++i)
-        //                 // process.env.A = 'a';
-        //             console.log("Runtime.getProperties", err, result);
-        //         });
-        //     }
-        // }
-        // session.post("Debugger.stepOver", (err) => console.log("Stepped over", err));
-        // session.post("Debugger.resume");
-        // for (const frame of msg.params.callFrames) {
-        //     const fnName = frame.functionName || '<anonymous>'
-        //     const url = scripts[frame.location.scriptId].url
-        //     const filename = url.split('/').pop()
-        //     const line = frame.location.lineNumber
-        //     const col = frame.location.columnNumber
+            {
+                const top = msg.params.callFrames[0]
+                const localScope = top.scopeChain.find((scope) => scope.type === "local");
+                if (localScope?.object?.objectId) {
+                    // this is synchronous, somehow?
+                    const result = await session.post("Runtime.getProperties", {
+                        objectId: localScope.object.objectId,
+                        ownProperties: true,
+                    })
+                    process._rawDebug('variables:', result.result.map((prop) => prop.name).join(', '))
 
-        //     console.log(`${fnName} \t@ ${filename}:${line}:${col}`)
-        // }
+                    const req = result.result.find((prop) => prop.name === 'req')
+                    if (req && req.value?.objectId) {
+                        const reqObj = await session.post("Runtime.getProperties", {
+                            objectId: req.value.objectId,
+                            ownProperties: true,
+                        })
+                        process._rawDebug('req props:', reqObj.result.map((prop) => prop.name).join(', '))
+
+                        const params = reqObj.result.find((prop) => prop.name === 'params')
+                        if (params && params.value?.objectId) {
+                            const paramsObj = await session.post("Runtime.getProperties", {
+                                objectId: params.value.objectId,
+                                ownProperties: true,
+                            })
+                            process._rawDebug('req.params:', JSON.stringify(paramsObj.result, null, 2))
+                        } else {
+                            process._rawDebug('req.params not found')
+                        }
+
+                        const query = reqObj.result.find((prop) => prop.name === 'query')
+                        if (query && query.value?.objectId) {
+                            const queryObj = await session.post("Runtime.getProperties", {
+                                objectId: query.value.objectId,
+                                ownProperties: true,
+                            })
+                            process._rawDebug('req.query:', JSON.stringify(queryObj.result, null, 2))
+                        } else {
+                            process._rawDebug('req.query not found')
+                        }
+                    }
+                }
+            }
+
+            // for (const frame of msg.params.callFrames) {
+                // console.log(frame)
+                // const localScope = frame.scopeChain.find((scope) => scope.type === "local");
+                // if (localScope?.object?.objectId) {
+                    // this is synchronous, somehow?
+                    // const result = await session.post("Runtime.getProperties", {
+                        // objectId: localScope.object.objectId,
+                        // ownProperties: true,
+                    // })
+                    // const scriptUrl = scripts[frame.location.scriptId].url
+                    // const names = result.result.map((prop) => prop.name).join(', ')
+                    // process._rawDebug(frame.functionName, scriptUrl, "local scope", names)
+                // }
+            // }
+            // session.post("Debugger.stepOver", (err) => console.log("Stepped over", err));
+            // session.post("Debugger.resume");
+            for (const frame of msg.params.callFrames) {
+                const fnName = frame.functionName || '<anonymous>'
+                const url = scripts[frame.location.scriptId].url
+                const line = frame.location.lineNumber
+                const col = frame.location.columnNumber
+
+                const scopes = frame.scopeChain.map((scope) => scope.type).join(', ')
+
+                process._rawDebug(`${fnName} \t@ ${url}:${line}:${col}. scopes[${scopes}]`)
+            }
+        } catch (err) {
+            process._rawDebug('Error in paused handler', err)
+        } finally {
+            await session.post('Debugger.resume')
+        }
+        process._rawDebug('\n\n')
 
         // const top = msg.params.callFrames[0]
         // const script = scripts[top.location.scriptId]
@@ -108,13 +158,19 @@ if (isMainThread) {
     })
 
     session.on('Debugger.breakpointResolved', (msg) => {
-        console.log('Breakpoint resolved', msg)
+        process._rawDebug('Breakpoint resolved', msg)
     })
 
     session.on('inspectorNotification', (msg) => {
-        if (msg.method !== 'Debugger.scriptParsed' && msg.method !== 'Runtime.consoleAPICalled')
-            console.log('[notification]', msg.method, msg.params)
+        const exclude = [
+            'Debugger.scriptParsed',
+            'Debugger.paused',
+            'Debugger.breakpointResolved',
+        ]
+        if (!exclude.includes(msg.method))
+            process._rawDebug('[📢 notification]', msg.method, msg.params)
     })
+
 
     // don't step into or break in node_modules
     // session.post('Debugger.setBlackboxPatterns', { patterns: ["/node_modules/|/bower_components/"] }, (err) => {
@@ -131,7 +187,7 @@ if (isMainThread) {
             // await session.post('Debugger.setBreakpointsActive', { active: false });
             // await session.post('Debugger.setSkipAllPauses', { skip: true });
 
-            await session.post('Runtime.evaluate', { expression: 'console.log("hello from inspector")' });
+            await session.post('Runtime.evaluate', { expression: 'process._rawDebug("hello from inspector")' });
 
             process._rawDebug('enabling debugger')
             const res = await session.post('Debugger.enable')
@@ -139,7 +195,7 @@ if (isMainThread) {
             debuggerEnabled = true
             process._rawDebug('Debugger enabled')
 
-            console.log('evaluating')
+            process._rawDebug('evaluating')
         } catch (err) {
             process._rawDebug('error', err)
         }

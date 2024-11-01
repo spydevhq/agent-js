@@ -9,4 +9,5 @@ setTimeout(() => {
     // debugger;
     console.log('resuming...')
     console.log('b')
+    console.log(x)
 }, 2000)

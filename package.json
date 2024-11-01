@@ -2,7 +2,8 @@
   "name": "debugger",
   "scripts": {
     "build": "tsc",
-    "demo": "tsc && node dist/test/test.js"
+    "demo-test": "tsc && node dist/test/test.js",
+    "demo-server": "tsc && node dist/server.js"
   },
   "dependencies": {
     "express": "^4.19.2"
