@@ -66,11 +66,18 @@ if (isMainThread) {
     })
 
     session.on('Debugger.paused', async (msg) => {
+        const fnName = msg.params.callFrames[0].functionName
+        const fileName = scripts[msg.params.callFrames[0].location.scriptId].url
+        const lineNumber = msg.params.callFrames[0].location.lineNumber
+ 
         try {
-            process._rawDebug(`⏸️ Paused in function[${msg.params.callFrames[0].functionName}] reason[${msg.params.reason}]`)
-            process._rawDebug(msg.params.callFrames[0])
-            process._rawDebug(msg)
-            process._rawDebug(msg.params.callFrames[0].scopeChain)
+            process._rawDebug(`⏸️ Paused in function[${fnName}] file[${fileName}] line[${lineNumber}] reason[${msg.params.reason}]`)
+
+            if (!fileName.includes('node_modules') && !fileName.startsWith('node:')) {
+                process._rawDebug(msg.params.callFrames[0])
+                process._rawDebug(msg)
+                process._rawDebug(msg.params.callFrames[0].scopeChain)
+            }
 
             {
                 const top = msg.params.callFrames[0]
@@ -145,7 +152,13 @@ if (isMainThread) {
         } catch (err) {
             process._rawDebug('Error in paused handler', err)
         } finally {
-            await session.post('Debugger.resume')
+            if (fnName === 'middleware' && fileName.includes('debugger/dist/index.js') && lineNumber >= 19)
+                await session.post('Debugger.resume')
+            else if (fileName.startsWith('node:')) {
+                process._rawDebug('blackbox didnt work')
+                await session.post('Debugger.stepOut')
+            } else
+                await session.post('Debugger.stepInto')
         }
         process._rawDebug('\n\n')
 
@@ -172,11 +185,6 @@ if (isMainThread) {
     })
 
 
-    // don't step into or break in node_modules
-    // session.post('Debugger.setBlackboxPatterns', { patterns: ["/node_modules/|/bower_components/"] }, (err) => {
-    // await session.post('Debugger.setBlackboxPatterns', { patterns: [] })
-
-    // await session.post('Runtime.enable')
     session.connectToMainThread();
 
     (async () => {
@@ -188,6 +196,12 @@ if (isMainThread) {
             // await session.post('Debugger.setSkipAllPauses', { skip: true });
 
             await session.post('Runtime.evaluate', { expression: 'process._rawDebug("hello from inspector")' });
+
+            // auto step out of source files that match these patterns
+            await session.post('Debugger.setBlackboxPatterns', { patterns: [
+                "/node_modules/",
+                "^node:", // TODO: this one isn't working
+            ] })
 
             process._rawDebug('enabling debugger')
             const res = await session.post('Debugger.enable')
