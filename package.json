@@ -1,17 +1,26 @@
 {
-  "name": "debugger",
+  "name": "@spy.dev/agent-js",
+  "type": "module",
+  "main": "./dist/index.js",
+  "types": "./dist/index.d.ts",
+  "files": [
+    "dist"
+  ],
   "scripts": {
-    "build": "tsc",
-    "demo-test": "tsc && node dist/test/test.js",
-    "demo-server": "tsc && node dist/server.js"
+    "generate": "buf generate",
+    "build": "tsc"
   },
   "dependencies": {
-    "express": "^4.19.2",
-    "ws": "^8.18.0"
+    "@bufbuild/protobuf": "^2.2.3",
+    "@connectrpc/connect": "^2.0.1",
+    "@connectrpc/connect-node": "^2.0.1"
   },
   "devDependencies": {
-    "@types/express": "^5.0.0",
+    "@bufbuild/buf": "^1.50.0",
+    "@bufbuild/protoc-gen-es": "^2.2.3",
     "@types/node": "^22.5.5",
+    "prettier": "^3.4.2",
+    "tsx": "^4.19.2",
     "typescript": "^5.6.2"
   }
 }

@@ -1,24 +1,13 @@
 import assert from 'node:assert';
+import EventEmitter from 'node:events';
 import { Debugger, Runtime, Session } from 'node:inspector/promises';
 import { inspect } from 'node:util';
 import { isMainThread, parentPort, Worker, workerData } from 'node:worker_threads';
-
-import EventEmitter from 'node:events';
-import WebSocket from 'ws';
 
 console.log(
   `🍱 Running in ${isMainThread ? 'Main thread' : 'Worker thread'} process[${process.title}]\n
   agent[${workerData?.isDebugSdkWorker}] id[${workerData?.id}]`,
 );
-
-declare global {
-  // eslint-disable-next-line @typescript-eslint/no-namespace
-  namespace NodeJS {
-    interface Process {
-      _rawDebug: (message?: any, ...optionalParams: any[]) => void;
-    }
-  }
-}
 
 type HttpTrace = {
   time: string;
