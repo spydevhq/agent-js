@@ -48,7 +48,7 @@ export async function startCommandStream(
 
       const handler = handlers[req.request.case];
 
-      handler(req as any)
+      handler(req.request.value as any)
         .then((res: any) => {
           events.emit('response', {
             $typeName: 'dev.spy.agent.v1.CommandStreamResponse',

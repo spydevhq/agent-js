@@ -4,7 +4,7 @@
 
 import type { GenFile, GenMessage, GenService } from "@bufbuild/protobuf/codegenv1";
 import { fileDesc, messageDesc, serviceDesc } from "@bufbuild/protobuf/codegenv1";
-import type { SourceTree } from "../../shared/v1/shared_pb.js";
+import type { SourceFile } from "../../shared/v1/shared_pb.js";
 import { file_dev_spy_shared_v1_shared } from "../../shared/v1/shared_pb.js";
 import type { Message } from "@bufbuild/protobuf";
 
@@ -12,7 +12,7 @@ import type { Message } from "@bufbuild/protobuf";
  * Describes the file dev/spy/agent/v1/agent.proto.
  */
 export const file_dev_spy_agent_v1_agent: GenFile = /*@__PURE__*/
-  fileDesc("ChxkZXYvc3B5L2FnZW50L3YxL2FnZW50LnByb3RvEhBkZXYuc3B5LmFnZW50LnYxIksKEkluaXRTZXNzaW9uUmVxdWVzdBIQCghhcHBfbmFtZRgBIAEoCRIVCg1hZ2VudF92ZXJzaW9uGAIgASgJEgwKBGFyZ3YYAyADKAkiKQoTSW5pdFNlc3Npb25SZXNwb25zZRISCgpzZXNzaW9uX2lkGAEgASgJIsMBChVDb21tYW5kU3RyZWFtUmVzcG9uc2USEgoKcmVxdWVzdF9pZBgBIAEoCRJCCg9nZXRfc291cmNlX3RyZWUYAiABKAsyJy5kZXYuc3B5LmFnZW50LnYxLkdldFNvdXJjZVRyZWVSZXNwb25zZUgAEkYKEWdldF9zY3JpcHRfc291cmNlGAMgASgLMikuZGV2LnNweS5hZ2VudC52MS5HZXRTY3JpcHRTb3VyY2VSZXNwb25zZUgAQgoKCHJlc3BvbnNlIr8BChRDb21tYW5kU3RyZWFtUmVxdWVzdBISCgpyZXF1ZXN0X2lkGAEgASgJEkEKD2dldF9zb3VyY2VfdHJlZRgCIAEoCzImLmRldi5zcHkuYWdlbnQudjEuR2V0U291cmNlVHJlZVJlcXVlc3RIABJFChFnZXRfc2NyaXB0X3NvdXJjZRgDIAEoCzIoLmRldi5zcHkuYWdlbnQudjEuR2V0U2NyaXB0U291cmNlUmVxdWVzdEgAQgkKB3JlcXVlc3QiFgoUR2V0U291cmNlVHJlZVJlcXVlc3QiRAoVR2V0U291cmNlVHJlZVJlc3BvbnNlEisKBHRyZWUYASABKAsyHS5kZXYuc3B5LnNoYXJlZC52MS5Tb3VyY2VUcmVlIisKFkdldFNjcmlwdFNvdXJjZVJlcXVlc3QSEQoJc2NyaXB0X2lkGAIgASgJIikKF0dldFNjcmlwdFNvdXJjZVJlc3BvbnNlEg4KBnNvdXJjZRgBIAEoCSJBChNMb2dwb2ludEhpdHNSZXF1ZXN0EioKA2hpdBgBIAEoCzIdLmRldi5zcHkuYWdlbnQudjEuTG9ncG9pbnRIaXQiFgoUTG9ncG9pbnRIaXRzUmVzcG9uc2UiRQoSQWRkTG9ncG9pbnRSZXF1ZXN0EhEKCXNjcmlwdF9pZBgCIAEoCRIMCgRsaW5lGAMgASgFEg4KBmFjdGl2ZRgEIAEoCCJhChNBZGRMb2dwb2ludFJlc3BvbnNlEhUKDWJyZWFrcG9pbnRfaWQYASABKAkSMwoPYWN0dWFsX2xvY2F0aW9uGAIgASgLMhouZGV2LnNweS5hZ2VudC52MS5Mb2NhdGlvbiIuChVSZW1vdmVMb2dwb2ludFJlcXVlc3QSFQoNYnJlYWtwb2ludF9pZBgBIAEoCSIYChZSZW1vdmVMb2dwb2ludFJlc3BvbnNlIhsKGVNjcmlwdFBhcnNlZEV2ZW50RGF0YVR5cGUiBwoFVHJhY2UiDQoLTG9ncG9pbnRIaXQiSQoITG9jYXRpb24SEQoJc2NyaXB0X2lkGAEgASgJEhMKC2xpbmVfbnVtYmVyGAIgASgFEhUKDWNvbHVtbl9udW1iZXIYAyABKAUyuQIKDkJhY2tlbmRTZXJ2aWNlElwKC0luaXRTZXNzaW9uEiQuZGV2LnNweS5hZ2VudC52MS5Jbml0U2Vzc2lvblJlcXVlc3QaJS5kZXYuc3B5LmFnZW50LnYxLkluaXRTZXNzaW9uUmVzcG9uc2UiABJhCgxMb2dwb2ludEhpdHMSJS5kZXYuc3B5LmFnZW50LnYxLkxvZ3BvaW50SGl0c1JlcXVlc3QaJi5kZXYuc3B5LmFnZW50LnYxLkxvZ3BvaW50SGl0c1Jlc3BvbnNlIgAoARJmCg1Db21tYW5kU3RyZWFtEicuZGV2LnNweS5hZ2VudC52MS5Db21tYW5kU3RyZWFtUmVzcG9uc2UaJi5kZXYuc3B5LmFnZW50LnYxLkNvbW1hbmRTdHJlYW1SZXF1ZXN0IgAoATABMtwBCgxBZ2VudFNlcnZpY2USYgoNR2V0U291cmNlVHJlZRImLmRldi5zcHkuYWdlbnQudjEuR2V0U291cmNlVHJlZVJlcXVlc3QaJy5kZXYuc3B5LmFnZW50LnYxLkdldFNvdXJjZVRyZWVSZXNwb25zZSIAEmgKD0dldFNjcmlwdFNvdXJjZRIoLmRldi5zcHkuYWdlbnQudjEuR2V0U2NyaXB0U291cmNlUmVxdWVzdBopLmRldi5zcHkuYWdlbnQudjEuR2V0U2NyaXB0U291cmNlUmVzcG9uc2UiAGIGcHJvdG8z", [file_dev_spy_shared_v1_shared]);
+  fileDesc("ChxkZXYvc3B5L2FnZW50L3YxL2FnZW50LnByb3RvEhBkZXYuc3B5LmFnZW50LnYxIksKEkluaXRTZXNzaW9uUmVxdWVzdBIQCghhcHBfbmFtZRgBIAEoCRIVCg1hZ2VudF92ZXJzaW9uGAIgASgJEgwKBGFyZ3YYAyADKAkiKQoTSW5pdFNlc3Npb25SZXNwb25zZRISCgpzZXNzaW9uX2lkGAEgASgJIrwBChVDb21tYW5kU3RyZWFtUmVzcG9uc2USEgoKcmVxdWVzdF9pZBgBIAEoCRI7CgtnZXRfc291cmNlcxgCIAEoCzIkLmRldi5zcHkuYWdlbnQudjEuR2V0U291cmNlc1Jlc3BvbnNlSAASRgoRZ2V0X3NjcmlwdF9zb3VyY2UYAyABKAsyKS5kZXYuc3B5LmFnZW50LnYxLkdldFNjcmlwdFNvdXJjZVJlc3BvbnNlSABCCgoIcmVzcG9uc2UiuAEKFENvbW1hbmRTdHJlYW1SZXF1ZXN0EhIKCnJlcXVlc3RfaWQYASABKAkSOgoLZ2V0X3NvdXJjZXMYAiABKAsyIy5kZXYuc3B5LmFnZW50LnYxLkdldFNvdXJjZXNSZXF1ZXN0SAASRQoRZ2V0X3NjcmlwdF9zb3VyY2UYAyABKAsyKC5kZXYuc3B5LmFnZW50LnYxLkdldFNjcmlwdFNvdXJjZVJlcXVlc3RIAEIJCgdyZXF1ZXN0IhMKEUdldFNvdXJjZXNSZXF1ZXN0IkIKEkdldFNvdXJjZXNSZXNwb25zZRIsCgVmaWxlcxgBIAMoCzIdLmRldi5zcHkuc2hhcmVkLnYxLlNvdXJjZUZpbGUiKwoWR2V0U2NyaXB0U291cmNlUmVxdWVzdBIRCglzY3JpcHRfaWQYAiABKAkiKQoXR2V0U2NyaXB0U291cmNlUmVzcG9uc2USDgoGc291cmNlGAEgASgJIkEKE0xvZ3BvaW50SGl0c1JlcXVlc3QSKgoDaGl0GAEgASgLMh0uZGV2LnNweS5hZ2VudC52MS5Mb2dwb2ludEhpdCIWChRMb2dwb2ludEhpdHNSZXNwb25zZSJFChJBZGRMb2dwb2ludFJlcXVlc3QSEQoJc2NyaXB0X2lkGAIgASgJEgwKBGxpbmUYAyABKAUSDgoGYWN0aXZlGAQgASgIImEKE0FkZExvZ3BvaW50UmVzcG9uc2USFQoNYnJlYWtwb2ludF9pZBgBIAEoCRIzCg9hY3R1YWxfbG9jYXRpb24YAiABKAsyGi5kZXYuc3B5LmFnZW50LnYxLkxvY2F0aW9uIi4KFVJlbW92ZUxvZ3BvaW50UmVxdWVzdBIVCg1icmVha3BvaW50X2lkGAEgASgJIhgKFlJlbW92ZUxvZ3BvaW50UmVzcG9uc2UiGwoZU2NyaXB0UGFyc2VkRXZlbnREYXRhVHlwZSIHCgVUcmFjZSINCgtMb2dwb2ludEhpdCJJCghMb2NhdGlvbhIRCglzY3JpcHRfaWQYASABKAkSEwoLbGluZV9udW1iZXIYAiABKAUSFQoNY29sdW1uX251bWJlchgDIAEoBTK5AgoOQmFja2VuZFNlcnZpY2USXAoLSW5pdFNlc3Npb24SJC5kZXYuc3B5LmFnZW50LnYxLkluaXRTZXNzaW9uUmVxdWVzdBolLmRldi5zcHkuYWdlbnQudjEuSW5pdFNlc3Npb25SZXNwb25zZSIAEmEKDExvZ3BvaW50SGl0cxIlLmRldi5zcHkuYWdlbnQudjEuTG9ncG9pbnRIaXRzUmVxdWVzdBomLmRldi5zcHkuYWdlbnQudjEuTG9ncG9pbnRIaXRzUmVzcG9uc2UiACgBEmYKDUNvbW1hbmRTdHJlYW0SJy5kZXYuc3B5LmFnZW50LnYxLkNvbW1hbmRTdHJlYW1SZXNwb25zZRomLmRldi5zcHkuYWdlbnQudjEuQ29tbWFuZFN0cmVhbVJlcXVlc3QiACgBMAEy0wEKDEFnZW50U2VydmljZRJZCgpHZXRTb3VyY2VzEiMuZGV2LnNweS5hZ2VudC52MS5HZXRTb3VyY2VzUmVxdWVzdBokLmRldi5zcHkuYWdlbnQudjEuR2V0U291cmNlc1Jlc3BvbnNlIgASaAoPR2V0U2NyaXB0U291cmNlEiguZGV2LnNweS5hZ2VudC52MS5HZXRTY3JpcHRTb3VyY2VSZXF1ZXN0GikuZGV2LnNweS5hZ2VudC52MS5HZXRTY3JpcHRTb3VyY2VSZXNwb25zZSIAYgZwcm90bzM", [file_dev_spy_shared_v1_shared]);
 
 /**
  * @generated from message dev.spy.agent.v1.InitSessionRequest
@@ -74,10 +74,10 @@ export type CommandStreamResponse = Message<"dev.spy.agent.v1.CommandStreamRespo
    */
   response: {
     /**
-     * @generated from field: dev.spy.agent.v1.GetSourceTreeResponse get_source_tree = 2;
+     * @generated from field: dev.spy.agent.v1.GetSourcesResponse get_sources = 2;
      */
-    value: GetSourceTreeResponse;
-    case: "getSourceTree";
+    value: GetSourcesResponse;
+    case: "getSources";
   } | {
     /**
      * StreamLogpointHitsRequest stream_logpoint_hits = 4;
@@ -114,10 +114,10 @@ export type CommandStreamRequest = Message<"dev.spy.agent.v1.CommandStreamReques
    */
   request: {
     /**
-     * @generated from field: dev.spy.agent.v1.GetSourceTreeRequest get_source_tree = 2;
+     * @generated from field: dev.spy.agent.v1.GetSourcesRequest get_sources = 2;
      */
-    value: GetSourceTreeRequest;
-    case: "getSourceTree";
+    value: GetSourcesRequest;
+    case: "getSources";
   } | {
     /**
      * StreamLogpointHitsResponse stream_logpoint_hits = 4;
@@ -139,33 +139,33 @@ export const CommandStreamRequestSchema: GenMessage<CommandStreamRequest> = /*@_
   messageDesc(file_dev_spy_agent_v1_agent, 3);
 
 /**
- * @generated from message dev.spy.agent.v1.GetSourceTreeRequest
+ * @generated from message dev.spy.agent.v1.GetSourcesRequest
  */
-export type GetSourceTreeRequest = Message<"dev.spy.agent.v1.GetSourceTreeRequest"> & {
+export type GetSourcesRequest = Message<"dev.spy.agent.v1.GetSourcesRequest"> & {
 };
 
 /**
- * Describes the message dev.spy.agent.v1.GetSourceTreeRequest.
- * Use `create(GetSourceTreeRequestSchema)` to create a new message.
+ * Describes the message dev.spy.agent.v1.GetSourcesRequest.
+ * Use `create(GetSourcesRequestSchema)` to create a new message.
  */
-export const GetSourceTreeRequestSchema: GenMessage<GetSourceTreeRequest> = /*@__PURE__*/
+export const GetSourcesRequestSchema: GenMessage<GetSourcesRequest> = /*@__PURE__*/
   messageDesc(file_dev_spy_agent_v1_agent, 4);
 
 /**
- * @generated from message dev.spy.agent.v1.GetSourceTreeResponse
+ * @generated from message dev.spy.agent.v1.GetSourcesResponse
  */
-export type GetSourceTreeResponse = Message<"dev.spy.agent.v1.GetSourceTreeResponse"> & {
+export type GetSourcesResponse = Message<"dev.spy.agent.v1.GetSourcesResponse"> & {
   /**
-   * @generated from field: dev.spy.shared.v1.SourceTree tree = 1;
+   * @generated from field: repeated dev.spy.shared.v1.SourceFile files = 1;
    */
-  tree?: SourceTree;
+  files: SourceFile[];
 };
 
 /**
- * Describes the message dev.spy.agent.v1.GetSourceTreeResponse.
- * Use `create(GetSourceTreeResponseSchema)` to create a new message.
+ * Describes the message dev.spy.agent.v1.GetSourcesResponse.
+ * Use `create(GetSourcesResponseSchema)` to create a new message.
  */
-export const GetSourceTreeResponseSchema: GenMessage<GetSourceTreeResponse> = /*@__PURE__*/
+export const GetSourcesResponseSchema: GenMessage<GetSourcesResponse> = /*@__PURE__*/
   messageDesc(file_dev_spy_agent_v1_agent, 5);
 
 /**
@@ -432,12 +432,12 @@ export const AgentService: GenService<{
   /**
    * rpc GetAgentInfo(GetAgentInfoRequest) returns (GetAgentInfoResponse) {}
    *
-   * @generated from rpc dev.spy.agent.v1.AgentService.GetSourceTree
+   * @generated from rpc dev.spy.agent.v1.AgentService.GetSources
    */
-  getSourceTree: {
+  getSources: {
     methodKind: "unary";
-    input: typeof GetSourceTreeRequestSchema;
-    output: typeof GetSourceTreeResponseSchema;
+    input: typeof GetSourcesRequestSchema;
+    output: typeof GetSourcesResponseSchema;
   },
   /**
    * @generated from rpc dev.spy.agent.v1.AgentService.GetScriptSource

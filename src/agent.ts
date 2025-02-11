@@ -1,6 +1,6 @@
 import { createClient } from '@connectrpc/connect';
 import { createConnectTransport } from '@connectrpc/connect-node';
-import { isMainThread, parentPort, workerData } from 'node:worker_threads';
+import { parentPort, workerData } from 'node:worker_threads';
 import { startCommandStream } from './commandStream.js';
 import { BackendService } from './gen/dev/spy/agent/v1/agent_pb.js';
 import { launch } from './launcher.js';
@@ -58,16 +58,22 @@ async function runAgent({ accessToken, appName, baseUrl }: SpyDevConfig) {
   await session.initialize();
 
   const handlers: CommandHandlers = {
-    getSourceTree: async (req) => {
+    getSources: async (_req) => {
       const scripts = session.getScripts();
       return {
-        $typeName: 'dev.spy.agent.v1.GetSourceTreeResponse',
+        $typeName: 'dev.spy.agent.v1.GetSourcesResponse',
+        files: Object.entries(scripts).map(([id, script]) => ({
+          $typeName: 'dev.spy.shared.v1.SourceFile',
+          scriptId: id,
+          url: script.url,
+        })),
       };
     },
     getScriptSource: async (req) => {
+      const source = await session.getScriptSource(req.scriptId);
       return {
         $typeName: 'dev.spy.agent.v1.GetScriptSourceResponse',
-        source: 'you got sourced',
+        source,
       };
     },
   };

@@ -10,47 +10,27 @@ import type { Message } from "@bufbuild/protobuf";
  * Describes the file dev/spy/shared/v1/shared.proto.
  */
 export const file_dev_spy_shared_v1_shared: GenFile = /*@__PURE__*/
-  fileDesc("Ch5kZXYvc3B5L3NoYXJlZC92MS9zaGFyZWQucHJvdG8SEWRldi5zcHkuc2hhcmVkLnYxIosBCgpTb3VyY2VUcmVlEhEKCXNjcmlwdF9pZBgBIAEoCRIMCgRuYW1lGAIgASgJEgwKBHBhdGgYAyABKAkSDAoEdHlwZRgEIAEoCRIPCgdjb250ZW50GAUgASgJEi8KCGNoaWxkcmVuGAYgAygLMh0uZGV2LnNweS5zaGFyZWQudjEuU291cmNlVHJlZWIGcHJvdG8z");
+  fileDesc("Ch5kZXYvc3B5L3NoYXJlZC92MS9zaGFyZWQucHJvdG8SEWRldi5zcHkuc2hhcmVkLnYxIiwKClNvdXJjZUZpbGUSEQoJc2NyaXB0X2lkGAEgASgJEgsKA3VybBgCIAEoCWIGcHJvdG8z");
 
 /**
- * @generated from message dev.spy.shared.v1.SourceTree
+ * @generated from message dev.spy.shared.v1.SourceFile
  */
-export type SourceTree = Message<"dev.spy.shared.v1.SourceTree"> & {
+export type SourceFile = Message<"dev.spy.shared.v1.SourceFile"> & {
   /**
    * @generated from field: string script_id = 1;
    */
   scriptId: string;
 
   /**
-   * @generated from field: string name = 2;
+   * @generated from field: string url = 2;
    */
-  name: string;
-
-  /**
-   * @generated from field: string path = 3;
-   */
-  path: string;
-
-  /**
-   * @generated from field: string type = 4;
-   */
-  type: string;
-
-  /**
-   * @generated from field: string content = 5;
-   */
-  content: string;
-
-  /**
-   * @generated from field: repeated dev.spy.shared.v1.SourceTree children = 6;
-   */
-  children: SourceTree[];
+  url: string;
 };
 
 /**
- * Describes the message dev.spy.shared.v1.SourceTree.
- * Use `create(SourceTreeSchema)` to create a new message.
+ * Describes the message dev.spy.shared.v1.SourceFile.
+ * Use `create(SourceFileSchema)` to create a new message.
  */
-export const SourceTreeSchema: GenMessage<SourceTree> = /*@__PURE__*/
+export const SourceFileSchema: GenMessage<SourceFile> = /*@__PURE__*/
   messageDesc(file_dev_spy_shared_v1_shared, 0);
 

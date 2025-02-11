@@ -15,10 +15,13 @@ declare global {
 
 // connect rpc types
 type Command = NonNullable<CommandStreamResponse['response']['case']>;
-type CommandRequest<C> = Omit<CommandStreamRequest, 'request'> & {
-  request: Extract<CommandStreamRequest['request'], { case: C }>;
-};
-type CommandResponse<C> = Extract<
+
+type CommandRequest<C extends Command> = Extract<
+  CommandStreamRequest['request'],
+  { case: C }
+>['value'];
+
+type CommandResponse<C extends Command> = Extract<
   CommandStreamResponse['response'],
   { case: C }
 >['value'];
