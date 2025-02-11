@@ -12,16 +12,12 @@ async function handleCommandStream(
   client: Client<typeof BackendService>,
   headers: Headers,
   handlers: CommandHandlers,
-  events: EventEmitter<{
-    response: [CommandStreamResponse];
-    ready: [];
-  }>,
+  events: EventEmitter<{ response: [CommandStreamResponse] }>,
 ) {
   // upload responses
   const stream = client.commandStream(
     (async function* uploadCommands() {
       const resp = eventToAsyncIterable(events, 'response');
-      events.emit('ready');
       for await (const x of resp) {
         console.log('>', x);
         yield x;
@@ -64,18 +60,9 @@ export async function connectToServer(
   headers: Headers,
   handlers: CommandHandlers,
 ): Promise<void> {
-  const events = new EventEmitter<{
-    response: [CommandStreamResponse];
-    ready: [];
-  }>();
+  const events = new EventEmitter<{ response: [CommandStreamResponse] }>();
 
-  const ready = new Promise<void>((resolve) => {
-    events.once('ready', resolve);
-  });
-
-  exponentialBackoff(async () => {
+  await exponentialBackoff(async () => {
     await handleCommandStream(client, headers, handlers, events);
   });
-
-  await ready;
 }

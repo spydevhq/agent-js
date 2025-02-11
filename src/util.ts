@@ -1,3 +1,5 @@
+import { Code, ConnectError } from "@connectrpc/connect";
+
 export function sleep(ms: number) {
   return new Promise((resolve) => setTimeout(resolve, ms));
 }
@@ -25,10 +27,20 @@ export async function exponentialBackoff(
       return;
     } catch (err) {
       console.error('Error in exponential backoff:', err);
+
       if (retries >= maxRetries) {
         throw err;
       }
+
+      if (err instanceof ConnectError) {
+        // these errors are not retryable
+        if (err.code === Code.Unauthenticated || err.code === Code.InvalidArgument) {
+          throw err;
+        }
+      }
+
       console.log(`Retrying in ${getBackoffDelay(retries)}ms (attempt ${retries + 1})`);
+      retries++;
       await sleep(getBackoffDelay(retries));
     }
   }
