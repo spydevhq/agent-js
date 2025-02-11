@@ -6,21 +6,17 @@ import {
   CommandStreamResponse,
 } from './gen/dev/spy/agent/v1/agent_pb.js';
 import { CommandHandlers } from './types.js';
+import { exponentialBackoff } from './util.js';
 
-export async function startCommandStream(
+async function handleCommandStream(
   client: Client<typeof BackendService>,
   headers: Headers,
   handlers: CommandHandlers,
-): Promise<void> {
-  const events = new EventEmitter<{
+  events: EventEmitter<{
     response: [CommandStreamResponse];
     ready: [];
-  }>();
-
-  const ready = new Promise<void>((resolve) => {
-    events.once('ready', resolve);
-  });
-
+  }>,
+) {
   // upload responses
   const stream = client.commandStream(
     (async function* uploadCommands() {
@@ -35,33 +31,51 @@ export async function startCommandStream(
   );
 
   // download commands
-  (async () => {
-    for await (const req of stream) {
-      console.log('<', req);
+  for await (const req of stream) {
+    console.log('<', req);
 
-      if (!req.request.case) {
-        console.log('unknown request', req);
-        continue;
-      }
-
-      // TODO: handle cancellation
-
-      const handler = handlers[req.request.case];
-
-      handler(req.request.value as any)
-        .then((res: any) => {
-          events.emit('response', {
-            $typeName: 'dev.spy.agent.v1.CommandStreamResponse',
-            requestId: req.requestId,
-            response: {
-              case: req.request.case,
-              value: res,
-            },
-          });
-        })
-        .catch(console.error);
+    if (!req.request.case) {
+      console.log('unknown request', req);
+      continue;
     }
-  })().catch(console.error);
+
+    const handler = handlers[req.request.case];
+
+    handler(req.request.value as any)
+      .then((res: any) => {
+        events.emit('response', {
+          $typeName: 'dev.spy.agent.v1.CommandStreamResponse',
+          requestId: req.requestId,
+          response: {
+            case: req.request.case,
+            value: res,
+          },
+        });
+      })
+      .catch((err) => {
+        console.error('Error handling request', req, err);
+        // TODO: report error
+      });
+  }
+}
+
+export async function connectToServer(
+  client: Client<typeof BackendService>,
+  headers: Headers,
+  handlers: CommandHandlers,
+): Promise<void> {
+  const events = new EventEmitter<{
+    response: [CommandStreamResponse];
+    ready: [];
+  }>();
+
+  const ready = new Promise<void>((resolve) => {
+    events.once('ready', resolve);
+  });
+
+  exponentialBackoff(async () => {
+    await handleCommandStream(client, headers, handlers, events);
+  });
 
   await ready;
 }

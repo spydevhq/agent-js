@@ -8,7 +8,7 @@
   ],
   "scripts": {
     "generate": "buf generate",
-    "build": "tsc"
+    "build": "rm -rf dist && tsc"
   },
   "dependencies": {
     "@bufbuild/protobuf": "^2.2.3",

@@ -48,3 +48,7 @@ export type SpyDevConfig = {
    */
   baseUrl?: string;
 };
+
+export type SpyDevMetadata = {
+  argv: string[];
+}

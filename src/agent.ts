@@ -1,15 +1,17 @@
 import { createClient } from '@connectrpc/connect';
 import { createConnectTransport } from '@connectrpc/connect-node';
 import { parentPort, workerData } from 'node:worker_threads';
-import { startCommandStream } from './commandStream.js';
+import { connectToServer } from './commandStream.js';
 import { BackendService } from './gen/dev/spy/agent/v1/agent_pb.js';
 import { launch } from './launcher.js';
 import { DebugSession } from './session.js';
-import { CommandHandlers, SpyDevConfig } from './types.js';
+import { CommandHandlers, SpyDevConfig, SpyDevMetadata } from './types.js';
+import { exponentialBackoff, getBackoffDelay, sleep } from './util.js';
 
 if (/*isMainThread || */ workerData?.spyDevConfig != null) {
   const config = workerData.spyDevConfig as SpyDevConfig;
-  runAgent(config);
+  const metadata = workerData.spyDevMetadata as SpyDevMetadata;
+  runAgent(config, metadata);
 }
 
 /**
@@ -25,14 +27,32 @@ export function init(config: SpyDevConfig) {
   }
 
   if (/*isMainThread || */ workerData?.isSpyDevAgent == null) {
-    launch(config);
+    launch(config, {
+      argv: process.argv,
+    });
   }
 }
 
-async function runAgent({ accessToken, appName, baseUrl }: SpyDevConfig) {
-  console.log('Running spy.dev agent');
-
+async function runAgent(config: SpyDevConfig, metadata: SpyDevMetadata) {
   parentPort?.on('message', () => {}); // stop worker from dying early
+
+  const MAX_RETRY_COUNT = 10;
+
+  try {
+    await exponentialBackoff(async () => {
+      await runOnce(config, metadata);
+    }, MAX_RETRY_COUNT);
+  } catch (err) {
+    console.error('Agent initialization failed all retries:', err);
+    await runAgent(config, metadata);
+  }
+}
+
+async function runOnce(
+  { accessToken, appName, baseUrl }: SpyDevConfig,
+  { argv }: SpyDevMetadata,
+) {
+  console.log('Running spy.dev agent');
 
   const client = createClient(
     BackendService,
@@ -46,11 +66,14 @@ async function runAgent({ accessToken, appName, baseUrl }: SpyDevConfig) {
   headers.set('Authorization', `Bearer ${accessToken}`);
 
   // TODO: can we parse the user's package.json?
-  const { sessionId } = await client.initSession({
-    appName,
-    agentVersion: '0.0.1', // TODO: get version from package.json
-    argv: process.argv,
-  }, { headers });
+  const { sessionId } = await client.initSession(
+    {
+      appName,
+      agentVersion: '0.0.1', // TODO: get version from package.json
+      argv,
+    },
+    { headers },
+  );
 
   headers.set('X-SpyDev-Session-Id', sessionId);
 
@@ -78,5 +101,5 @@ async function runAgent({ accessToken, appName, baseUrl }: SpyDevConfig) {
     },
   };
 
-  await startCommandStream(client, headers, handlers);
+  await connectToServer(client, headers, handlers);
 }
