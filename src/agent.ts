@@ -6,7 +6,7 @@ import { BackendService } from './gen/dev/spy/agent/v1/agent_pb.js';
 import { launch } from './launcher.js';
 import { DebugSession } from './session.js';
 import { CommandHandlers, SpyDevConfig, SpyDevMetadata } from './types.js';
-import { exponentialBackoff, getBackoffDelay, sleep } from './util.js';
+import { exponentialBackoff } from './util.js';
 
 if (/*isMainThread || */ workerData?.spyDevConfig != null) {
   const config = workerData.spyDevConfig as SpyDevConfig;

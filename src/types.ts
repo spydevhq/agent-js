@@ -51,4 +51,4 @@ export type SpyDevConfig = {
 
 export type SpyDevMetadata = {
   argv: string[];
-}
+};

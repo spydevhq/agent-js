@@ -24,11 +24,16 @@ export class DebugSession {
   }
 
   private setupEventHandlers() {
-    this.session.on('Debugger.scriptParsed', this.handleScriptParsed.bind(this));
+    this.session.on(
+      'Debugger.scriptParsed',
+      this.handleScriptParsed.bind(this),
+    );
     this.session.on('Debugger.paused', this.handlePaused.bind(this));
   }
 
-  private async handleScriptParsed(msg: { params: Debugger.ScriptParsedEventDataType }) {
+  private async handleScriptParsed(msg: {
+    params: Debugger.ScriptParsedEventDataType;
+  }) {
     const script = msg.params;
     this.scripts[script.scriptId] = script;
   }
@@ -48,7 +53,9 @@ export class DebugSession {
   }
 
   async getScriptSource(scriptId: string) {
-    const result = await this.session.post('Debugger.getScriptSource', { scriptId });
+    const result = await this.session.post('Debugger.getScriptSource', {
+      scriptId,
+    });
     return result.scriptSource;
   }
-} 
+}

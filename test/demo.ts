@@ -3,7 +3,8 @@ import spyDev from '../src/index.js';
 
 spyDev.init({
   appName: 'demo-app',
-  accessToken: '2c31bcc1635112b69fbf524530893d44f24a2010dc8f797fc9102678b936eff7',
+  accessToken:
+    '2c31bcc1635112b69fbf524530893d44f24a2010dc8f797fc9102678b936eff7',
   baseUrl: 'https://localhost:4000',
 });
 

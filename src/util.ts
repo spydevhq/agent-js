@@ -1,4 +1,4 @@
-import { Code, ConnectError } from "@connectrpc/connect";
+import { Code, ConnectError } from '@connectrpc/connect';
 
 export function sleep(ms: number) {
   return new Promise((resolve) => setTimeout(resolve, ms));
@@ -7,7 +7,7 @@ export function sleep(ms: number) {
 const MAX_DELAY_MS = 32000;
 const BASE_DELAY_MS = 1000;
 
-export function getBackoffDelay(retryCount: number) {
+function getBackoffDelay(retryCount: number) {
   const delay = Math.min(MAX_DELAY_MS, BASE_DELAY_MS * Math.pow(2, retryCount));
 
   // Add some jitter to prevent thundering herd
@@ -34,12 +34,17 @@ export async function exponentialBackoff(
 
       if (err instanceof ConnectError) {
         // these errors are not retryable
-        if (err.code === Code.Unauthenticated || err.code === Code.InvalidArgument) {
+        if (
+          err.code === Code.Unauthenticated ||
+          err.code === Code.InvalidArgument
+        ) {
           throw err;
         }
       }
 
-      console.log(`Retrying in ${getBackoffDelay(retries)}ms (attempt ${retries + 1})`);
+      console.log(
+        `Retrying in ${getBackoffDelay(retries)}ms (attempt ${retries + 1})`,
+      );
       retries++;
       await sleep(getBackoffDelay(retries));
     }

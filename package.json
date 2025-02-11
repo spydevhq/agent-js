@@ -8,7 +8,9 @@
   ],
   "scripts": {
     "generate": "buf generate",
-    "build": "rm -rf dist && tsc"
+    "build": "rm -rf dist && tsc",
+    "format:write": "prettier --write \"**/*.{ts,tsx,js,jsx,mdx}\" --cache",
+    "format:check": "prettier --check \"**/*.{ts,tsx,js,jsx,mdx}\" --cache"
   },
   "dependencies": {
     "@bufbuild/protobuf": "^2.2.3",
