@@ -1,3 +1,0 @@
-[submodule "monorepo"]
-	path = monorepo
-	url = git@github.com:spydevhq/app
