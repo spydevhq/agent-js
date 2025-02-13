@@ -112,6 +112,12 @@ async function runOnce(
         },
       };
     },
+    removeLogpoint: async ({ breakpointId }) => {
+      await session.removeLogpoint(breakpointId);
+      return {
+        $typeName: 'dev.spy.agent.v1.RemoveLogpointResponse',
+      };
+    },
   };
 
   await connectToServer(client, headers, handlers);

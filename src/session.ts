@@ -68,4 +68,10 @@ export class DebugSession {
     });
     return result;
   }
+
+  async removeLogpoint(breakpointId: string) {
+    await this.session.post('Debugger.removeBreakpoint', {
+      breakpointId,
+    });
+  }
 }
