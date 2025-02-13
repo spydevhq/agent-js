@@ -58,4 +58,14 @@ export class DebugSession {
     });
     return result.scriptSource;
   }
+
+  async addLogpoint(scriptId: string, line: number) {
+    const result = await this.session.post('Debugger.setBreakpoint', {
+      location: {
+        scriptId,
+        lineNumber: line,
+      },
+    });
+    return result;
+  }
 }

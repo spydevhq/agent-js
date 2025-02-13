@@ -4,7 +4,7 @@
 
 import type { GenFile, GenMessage, GenService } from "@bufbuild/protobuf/codegenv1";
 import { fileDesc, messageDesc, serviceDesc } from "@bufbuild/protobuf/codegenv1";
-import type { SourceFile } from "../../shared/v1/shared_pb.js";
+import type { Location, SourceFile } from "../../shared/v1/shared_pb.js";
 import { file_dev_spy_shared_v1_shared } from "../../shared/v1/shared_pb.js";
 import type { Message } from "@bufbuild/protobuf";
 
@@ -12,7 +12,7 @@ import type { Message } from "@bufbuild/protobuf";
  * Describes the file dev/spy/agent/v1/agent.proto.
  */
 export const file_dev_spy_agent_v1_agent: GenFile = /*@__PURE__*/
-  fileDesc("ChxkZXYvc3B5L2FnZW50L3YxL2FnZW50LnByb3RvEhBkZXYuc3B5LmFnZW50LnYxIksKEkluaXRTZXNzaW9uUmVxdWVzdBIQCghhcHBfbmFtZRgBIAEoCRIVCg1hZ2VudF92ZXJzaW9uGAIgASgJEgwKBGFyZ3YYAyADKAkiKQoTSW5pdFNlc3Npb25SZXNwb25zZRISCgpzZXNzaW9uX2lkGAEgASgJIrwBChVDb21tYW5kU3RyZWFtUmVzcG9uc2USEgoKcmVxdWVzdF9pZBgBIAEoCRI7CgtnZXRfc291cmNlcxgCIAEoCzIkLmRldi5zcHkuYWdlbnQudjEuR2V0U291cmNlc1Jlc3BvbnNlSAASRgoRZ2V0X3NjcmlwdF9zb3VyY2UYAyABKAsyKS5kZXYuc3B5LmFnZW50LnYxLkdldFNjcmlwdFNvdXJjZVJlc3BvbnNlSABCCgoIcmVzcG9uc2UiuAEKFENvbW1hbmRTdHJlYW1SZXF1ZXN0EhIKCnJlcXVlc3RfaWQYASABKAkSOgoLZ2V0X3NvdXJjZXMYAiABKAsyIy5kZXYuc3B5LmFnZW50LnYxLkdldFNvdXJjZXNSZXF1ZXN0SAASRQoRZ2V0X3NjcmlwdF9zb3VyY2UYAyABKAsyKC5kZXYuc3B5LmFnZW50LnYxLkdldFNjcmlwdFNvdXJjZVJlcXVlc3RIAEIJCgdyZXF1ZXN0IhMKEUdldFNvdXJjZXNSZXF1ZXN0IkIKEkdldFNvdXJjZXNSZXNwb25zZRIsCgVmaWxlcxgBIAMoCzIdLmRldi5zcHkuc2hhcmVkLnYxLlNvdXJjZUZpbGUiKwoWR2V0U2NyaXB0U291cmNlUmVxdWVzdBIRCglzY3JpcHRfaWQYAiABKAkiKQoXR2V0U2NyaXB0U291cmNlUmVzcG9uc2USDgoGc291cmNlGAEgASgJIkEKE0xvZ3BvaW50SGl0c1JlcXVlc3QSKgoDaGl0GAEgASgLMh0uZGV2LnNweS5hZ2VudC52MS5Mb2dwb2ludEhpdCIWChRMb2dwb2ludEhpdHNSZXNwb25zZSJFChJBZGRMb2dwb2ludFJlcXVlc3QSEQoJc2NyaXB0X2lkGAIgASgJEgwKBGxpbmUYAyABKAUSDgoGYWN0aXZlGAQgASgIImEKE0FkZExvZ3BvaW50UmVzcG9uc2USFQoNYnJlYWtwb2ludF9pZBgBIAEoCRIzCg9hY3R1YWxfbG9jYXRpb24YAiABKAsyGi5kZXYuc3B5LmFnZW50LnYxLkxvY2F0aW9uIi4KFVJlbW92ZUxvZ3BvaW50UmVxdWVzdBIVCg1icmVha3BvaW50X2lkGAEgASgJIhgKFlJlbW92ZUxvZ3BvaW50UmVzcG9uc2UiGwoZU2NyaXB0UGFyc2VkRXZlbnREYXRhVHlwZSIHCgVUcmFjZSINCgtMb2dwb2ludEhpdCJJCghMb2NhdGlvbhIRCglzY3JpcHRfaWQYASABKAkSEwoLbGluZV9udW1iZXIYAiABKAUSFQoNY29sdW1uX251bWJlchgDIAEoBTK5AgoOQmFja2VuZFNlcnZpY2USXAoLSW5pdFNlc3Npb24SJC5kZXYuc3B5LmFnZW50LnYxLkluaXRTZXNzaW9uUmVxdWVzdBolLmRldi5zcHkuYWdlbnQudjEuSW5pdFNlc3Npb25SZXNwb25zZSIAEmEKDExvZ3BvaW50SGl0cxIlLmRldi5zcHkuYWdlbnQudjEuTG9ncG9pbnRIaXRzUmVxdWVzdBomLmRldi5zcHkuYWdlbnQudjEuTG9ncG9pbnRIaXRzUmVzcG9uc2UiACgBEmYKDUNvbW1hbmRTdHJlYW0SJy5kZXYuc3B5LmFnZW50LnYxLkNvbW1hbmRTdHJlYW1SZXNwb25zZRomLmRldi5zcHkuYWdlbnQudjEuQ29tbWFuZFN0cmVhbVJlcXVlc3QiACgBMAEy0wEKDEFnZW50U2VydmljZRJZCgpHZXRTb3VyY2VzEiMuZGV2LnNweS5hZ2VudC52MS5HZXRTb3VyY2VzUmVxdWVzdBokLmRldi5zcHkuYWdlbnQudjEuR2V0U291cmNlc1Jlc3BvbnNlIgASaAoPR2V0U2NyaXB0U291cmNlEiguZGV2LnNweS5hZ2VudC52MS5HZXRTY3JpcHRTb3VyY2VSZXF1ZXN0GikuZGV2LnNweS5hZ2VudC52MS5HZXRTY3JpcHRTb3VyY2VSZXNwb25zZSIAYgZwcm90bzM", [file_dev_spy_shared_v1_shared]);
+  fileDesc("ChxkZXYvc3B5L2FnZW50L3YxL2FnZW50LnByb3RvEhBkZXYuc3B5LmFnZW50LnYxIksKEkluaXRTZXNzaW9uUmVxdWVzdBIQCghhcHBfbmFtZRgBIAEoCRIVCg1hZ2VudF92ZXJzaW9uGAIgASgJEgwKBGFyZ3YYAyADKAkiKQoTSW5pdFNlc3Npb25SZXNwb25zZRISCgpzZXNzaW9uX2lkGAEgASgJItMCChVDb21tYW5kU3RyZWFtUmVzcG9uc2USEgoKcmVxdWVzdF9pZBgBIAEoCRI7CgtnZXRfc291cmNlcxgCIAEoCzIkLmRldi5zcHkuYWdlbnQudjEuR2V0U291cmNlc1Jlc3BvbnNlSAASRgoRZ2V0X3NjcmlwdF9zb3VyY2UYAyABKAsyKS5kZXYuc3B5LmFnZW50LnYxLkdldFNjcmlwdFNvdXJjZVJlc3BvbnNlSAASPQoMYWRkX2xvZ3BvaW50GAQgASgLMiUuZGV2LnNweS5hZ2VudC52MS5BZGRMb2dwb2ludFJlc3BvbnNlSAASPAoFZXJyb3IYBSABKAsyLS5kZXYuc3B5LmFnZW50LnYxLkNvbW1hbmRTdHJlYW1SZXNwb25zZS5FcnJvchoYCgVFcnJvchIPCgdtZXNzYWdlGAEgASgJQgoKCHJlc3BvbnNlIvYBChRDb21tYW5kU3RyZWFtUmVxdWVzdBISCgpyZXF1ZXN0X2lkGAEgASgJEjoKC2dldF9zb3VyY2VzGAIgASgLMiMuZGV2LnNweS5hZ2VudC52MS5HZXRTb3VyY2VzUmVxdWVzdEgAEkUKEWdldF9zY3JpcHRfc291cmNlGAMgASgLMiguZGV2LnNweS5hZ2VudC52MS5HZXRTY3JpcHRTb3VyY2VSZXF1ZXN0SAASPAoMYWRkX2xvZ3BvaW50GAQgASgLMiQuZGV2LnNweS5hZ2VudC52MS5BZGRMb2dwb2ludFJlcXVlc3RIAEIJCgdyZXF1ZXN0IhMKEUdldFNvdXJjZXNSZXF1ZXN0IkIKEkdldFNvdXJjZXNSZXNwb25zZRIsCgVmaWxlcxgBIAMoCzIdLmRldi5zcHkuc2hhcmVkLnYxLlNvdXJjZUZpbGUiKwoWR2V0U2NyaXB0U291cmNlUmVxdWVzdBIRCglzY3JpcHRfaWQYAiABKAkiKQoXR2V0U2NyaXB0U291cmNlUmVzcG9uc2USDgoGc291cmNlGAEgASgJIkEKE0xvZ3BvaW50SGl0c1JlcXVlc3QSKgoDaGl0GAEgASgLMh0uZGV2LnNweS5hZ2VudC52MS5Mb2dwb2ludEhpdCIWChRMb2dwb2ludEhpdHNSZXNwb25zZSI1ChJBZGRMb2dwb2ludFJlcXVlc3QSEQoJc2NyaXB0X2lkGAEgASgJEgwKBGxpbmUYAiABKAUiYgoTQWRkTG9ncG9pbnRSZXNwb25zZRIVCg1icmVha3BvaW50X2lkGAEgASgJEjQKD2FjdHVhbF9sb2NhdGlvbhgCIAEoCzIbLmRldi5zcHkuc2hhcmVkLnYxLkxvY2F0aW9uIi4KFVJlbW92ZUxvZ3BvaW50UmVxdWVzdBIVCg1icmVha3BvaW50X2lkGAEgASgJIhgKFlJlbW92ZUxvZ3BvaW50UmVzcG9uc2UiGwoZU2NyaXB0UGFyc2VkRXZlbnREYXRhVHlwZSIHCgVUcmFjZSINCgtMb2dwb2ludEhpdDK5AgoOQmFja2VuZFNlcnZpY2USXAoLSW5pdFNlc3Npb24SJC5kZXYuc3B5LmFnZW50LnYxLkluaXRTZXNzaW9uUmVxdWVzdBolLmRldi5zcHkuYWdlbnQudjEuSW5pdFNlc3Npb25SZXNwb25zZSIAEmEKDExvZ3BvaW50SGl0cxIlLmRldi5zcHkuYWdlbnQudjEuTG9ncG9pbnRIaXRzUmVxdWVzdBomLmRldi5zcHkuYWdlbnQudjEuTG9ncG9pbnRIaXRzUmVzcG9uc2UiACgBEmYKDUNvbW1hbmRTdHJlYW0SJy5kZXYuc3B5LmFnZW50LnYxLkNvbW1hbmRTdHJlYW1SZXNwb25zZRomLmRldi5zcHkuYWdlbnQudjEuQ29tbWFuZFN0cmVhbVJlcXVlc3QiACgBMAEysQIKDEFnZW50U2VydmljZRJZCgpHZXRTb3VyY2VzEiMuZGV2LnNweS5hZ2VudC52MS5HZXRTb3VyY2VzUmVxdWVzdBokLmRldi5zcHkuYWdlbnQudjEuR2V0U291cmNlc1Jlc3BvbnNlIgASaAoPR2V0U2NyaXB0U291cmNlEiguZGV2LnNweS5hZ2VudC52MS5HZXRTY3JpcHRTb3VyY2VSZXF1ZXN0GikuZGV2LnNweS5hZ2VudC52MS5HZXRTY3JpcHRTb3VyY2VSZXNwb25zZSIAElwKC0FkZExvZ3BvaW50EiQuZGV2LnNweS5hZ2VudC52MS5BZGRMb2dwb2ludFJlcXVlc3QaJS5kZXYuc3B5LmFnZW50LnYxLkFkZExvZ3BvaW50UmVzcG9uc2UiAGIGcHJvdG8z", [file_dev_spy_shared_v1_shared]);
 
 /**
  * @generated from message dev.spy.agent.v1.InitSessionRequest
@@ -80,15 +80,25 @@ export type CommandStreamResponse = Message<"dev.spy.agent.v1.CommandStreamRespo
     case: "getSources";
   } | {
     /**
-     * StreamLogpointHitsRequest stream_logpoint_hits = 4;
-     * AddLogpointRequest add_logpoint = 5;
-     * RemoveLogpointRequest remove_logpoint = 6;
-     *
      * @generated from field: dev.spy.agent.v1.GetScriptSourceResponse get_script_source = 3;
      */
     value: GetScriptSourceResponse;
     case: "getScriptSource";
+  } | {
+    /**
+     * StreamLogpointHitsRequest stream_logpoint_hits = 4;
+     * RemoveLogpointRequest remove_logpoint = 6;
+     *
+     * @generated from field: dev.spy.agent.v1.AddLogpointResponse add_logpoint = 4;
+     */
+    value: AddLogpointResponse;
+    case: "addLogpoint";
   } | { case: undefined; value?: undefined };
+
+  /**
+   * @generated from field: dev.spy.agent.v1.CommandStreamResponse.Error error = 5;
+   */
+  error?: CommandStreamResponse_Error;
 };
 
 /**
@@ -97,6 +107,23 @@ export type CommandStreamResponse = Message<"dev.spy.agent.v1.CommandStreamRespo
  */
 export const CommandStreamResponseSchema: GenMessage<CommandStreamResponse> = /*@__PURE__*/
   messageDesc(file_dev_spy_agent_v1_agent, 2);
+
+/**
+ * @generated from message dev.spy.agent.v1.CommandStreamResponse.Error
+ */
+export type CommandStreamResponse_Error = Message<"dev.spy.agent.v1.CommandStreamResponse.Error"> & {
+  /**
+   * @generated from field: string message = 1;
+   */
+  message: string;
+};
+
+/**
+ * Describes the message dev.spy.agent.v1.CommandStreamResponse.Error.
+ * Use `create(CommandStreamResponse_ErrorSchema)` to create a new message.
+ */
+export const CommandStreamResponse_ErrorSchema: GenMessage<CommandStreamResponse_Error> = /*@__PURE__*/
+  messageDesc(file_dev_spy_agent_v1_agent, 2, 0);
 
 /**
  * server --> client requests
@@ -120,14 +147,19 @@ export type CommandStreamRequest = Message<"dev.spy.agent.v1.CommandStreamReques
     case: "getSources";
   } | {
     /**
-     * StreamLogpointHitsResponse stream_logpoint_hits = 4;
-     * AddLogpointResponse add_logpoint = 5;
-     * RemoveLogpointResponse remove_logpoint = 6;
-     *
      * @generated from field: dev.spy.agent.v1.GetScriptSourceRequest get_script_source = 3;
      */
     value: GetScriptSourceRequest;
     case: "getScriptSource";
+  } | {
+    /**
+     * StreamLogpointHitsResponse stream_logpoint_hits = 4;
+     * RemoveLogpointResponse remove_logpoint = 6;
+     *
+     * @generated from field: dev.spy.agent.v1.AddLogpointRequest add_logpoint = 4;
+     */
+    value: AddLogpointRequest;
+    case: "addLogpoint";
   } | { case: undefined; value?: undefined };
 };
 
@@ -237,19 +269,14 @@ export const LogpointHitsResponseSchema: GenMessage<LogpointHitsResponse> = /*@_
  */
 export type AddLogpointRequest = Message<"dev.spy.agent.v1.AddLogpointRequest"> & {
   /**
-   * @generated from field: string script_id = 2;
+   * @generated from field: string script_id = 1;
    */
   scriptId: string;
 
   /**
-   * @generated from field: int32 line = 3;
+   * @generated from field: int32 line = 2;
    */
   line: number;
-
-  /**
-   * @generated from field: bool active = 4;
-   */
-  active: boolean;
 };
 
 /**
@@ -269,7 +296,7 @@ export type AddLogpointResponse = Message<"dev.spy.agent.v1.AddLogpointResponse"
   breakpointId: string;
 
   /**
-   * @generated from field: dev.spy.agent.v1.Location actual_location = 2;
+   * @generated from field: dev.spy.shared.v1.Location actual_location = 2;
    */
   actualLocation?: Location;
 };
@@ -357,33 +384,6 @@ export const LogpointHitSchema: GenMessage<LogpointHit> = /*@__PURE__*/
   messageDesc(file_dev_spy_agent_v1_agent, 16);
 
 /**
- * @generated from message dev.spy.agent.v1.Location
- */
-export type Location = Message<"dev.spy.agent.v1.Location"> & {
-  /**
-   * @generated from field: string script_id = 1;
-   */
-  scriptId: string;
-
-  /**
-   * @generated from field: int32 line_number = 2;
-   */
-  lineNumber: number;
-
-  /**
-   * @generated from field: int32 column_number = 3;
-   */
-  columnNumber: number;
-};
-
-/**
- * Describes the message dev.spy.agent.v1.Location.
- * Use `create(LocationSchema)` to create a new message.
- */
-export const LocationSchema: GenMessage<Location> = /*@__PURE__*/
-  messageDesc(file_dev_spy_agent_v1_agent, 17);
-
-/**
  * TODO: maybe all requests should run over the command stream?
  *
  * @generated from service dev.spy.agent.v1.BackendService
@@ -446,6 +446,14 @@ export const AgentService: GenService<{
     methodKind: "unary";
     input: typeof GetScriptSourceRequestSchema;
     output: typeof GetScriptSourceResponseSchema;
+  },
+  /**
+   * @generated from rpc dev.spy.agent.v1.AgentService.AddLogpoint
+   */
+  addLogpoint: {
+    methodKind: "unary";
+    input: typeof AddLogpointRequestSchema;
+    output: typeof AddLogpointResponseSchema;
   },
 }> = /*@__PURE__*/
   serviceDesc(file_dev_spy_agent_v1_agent, 1);

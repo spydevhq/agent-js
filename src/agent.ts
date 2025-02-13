@@ -99,6 +99,19 @@ async function runOnce(
         source,
       };
     },
+    addLogpoint: async ({ scriptId, line }) => {
+      const { actualLocation, breakpointId } = await session.addLogpoint(scriptId, line);
+      return {
+        $typeName: 'dev.spy.agent.v1.AddLogpointResponse',
+        breakpointId,
+        actualLocation: {
+          $typeName: 'dev.spy.shared.v1.Location',
+          scriptId,
+          lineNumber: actualLocation.lineNumber,
+          columnNumber: actualLocation.columnNumber ?? 0,
+        },
+      };
+    },
   };
 
   await connectToServer(client, headers, handlers);

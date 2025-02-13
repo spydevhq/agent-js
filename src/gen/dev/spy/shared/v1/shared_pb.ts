@@ -10,7 +10,7 @@ import type { Message } from "@bufbuild/protobuf";
  * Describes the file dev/spy/shared/v1/shared.proto.
  */
 export const file_dev_spy_shared_v1_shared: GenFile = /*@__PURE__*/
-  fileDesc("Ch5kZXYvc3B5L3NoYXJlZC92MS9zaGFyZWQucHJvdG8SEWRldi5zcHkuc2hhcmVkLnYxIiwKClNvdXJjZUZpbGUSEQoJc2NyaXB0X2lkGAEgASgJEgsKA3VybBgCIAEoCWIGcHJvdG8z");
+  fileDesc("Ch5kZXYvc3B5L3NoYXJlZC92MS9zaGFyZWQucHJvdG8SEWRldi5zcHkuc2hhcmVkLnYxIiwKClNvdXJjZUZpbGUSEQoJc2NyaXB0X2lkGAEgASgJEgsKA3VybBgCIAEoCSJJCghMb2NhdGlvbhIRCglzY3JpcHRfaWQYASABKAkSEwoLbGluZV9udW1iZXIYAiABKAUSFQoNY29sdW1uX251bWJlchgDIAEoBWIGcHJvdG8z");
 
 /**
  * @generated from message dev.spy.shared.v1.SourceFile
@@ -33,4 +33,31 @@ export type SourceFile = Message<"dev.spy.shared.v1.SourceFile"> & {
  */
 export const SourceFileSchema: GenMessage<SourceFile> = /*@__PURE__*/
   messageDesc(file_dev_spy_shared_v1_shared, 0);
+
+/**
+ * @generated from message dev.spy.shared.v1.Location
+ */
+export type Location = Message<"dev.spy.shared.v1.Location"> & {
+  /**
+   * @generated from field: string script_id = 1;
+   */
+  scriptId: string;
+
+  /**
+   * @generated from field: int32 line_number = 2;
+   */
+  lineNumber: number;
+
+  /**
+   * @generated from field: int32 column_number = 3;
+   */
+  columnNumber: number;
+};
+
+/**
+ * Describes the message dev.spy.shared.v1.Location.
+ * Use `create(LocationSchema)` to create a new message.
+ */
+export const LocationSchema: GenMessage<Location> = /*@__PURE__*/
+  messageDesc(file_dev_spy_shared_v1_shared, 1);
 

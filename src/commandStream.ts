@@ -32,6 +32,18 @@ async function handleCommandStream(
 
     if (!req.request.case) {
       console.log('unknown request', req);
+      events.emit('response', {
+        $typeName: 'dev.spy.agent.v1.CommandStreamResponse',
+        requestId: req.requestId,
+        error: {
+          $typeName: 'dev.spy.agent.v1.CommandStreamResponse.Error',
+          message: 'unknown request',
+        },
+        response: {
+          case: undefined,
+          value: undefined,
+        }
+      });
       continue;
     }
 
