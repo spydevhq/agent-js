@@ -55,7 +55,7 @@ export class DebugSession {
       const fileName = this.scripts[params.callFrames[0].location.scriptId].url;
       const lineNumber = params.callFrames[0].location.lineNumber;
       process._rawDebug(
-        `⏸️ Paused in function[${fnName}] file[${fileName}] line[${lineNumber}] reason[${params.reason}]`,
+        `Collecting data for function[${fnName}] file[${fileName}] line[${lineNumber}] reason[${params.reason}]`,
       );
       const hitBreakpoints = params.hitBreakpoints ?? [];
       assert(
