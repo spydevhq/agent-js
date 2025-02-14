@@ -26,14 +26,14 @@ export async function exponentialBackoff(
       await fn();
       return;
     } catch (err) {
-      console.error('Error in exponential backoff:', err);
+      console.error('spy.dev: error in exponential backoff:', err);
 
       if (retries >= maxRetries) {
         throw err;
       }
 
       console.log(
-        `Retrying in ${getBackoffDelay(retries)}ms (attempt ${retries + 1})`,
+        `spy.dev: retrying in ${getBackoffDelay(retries)}ms (attempt ${retries + 1})`,
       );
       retries++;
       await sleep(getBackoffDelay(retries));

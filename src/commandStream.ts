@@ -20,21 +20,21 @@ async function run(
     (async function* uploadCommands() {
       const resp = eventToAsyncIterable(events, 'response');
       for await (const x of resp) {
-        console.log('>', x);
+        // console.log('>', x);
         yield x;
       }
     })(),
     { headers },
   );
 
-  console.log('Successfully connected to server');
+  console.log('Successfully connected to spy.dev backend');
 
   // download commands
   for await (const req of stream) {
-    console.log('<', req);
+    // console.log('<', req);
 
     if (!req.request.case) {
-      console.log('unknown request', req);
+      console.log('spy.dev: unknown request', req);
       events.emit('response', {
         $typeName: 'dev.spy.agent.v1.CommandStreamResponse',
         requestId: req.requestId,
