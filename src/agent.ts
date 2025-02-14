@@ -1,18 +1,13 @@
 import { createClient } from '@connectrpc/connect';
 import { createConnectTransport } from '@connectrpc/connect-node';
 import { parentPort, workerData } from 'node:worker_threads';
-import { connectToServer } from './commandStream.js';
+import { eventToAsyncIterable, mapAsyncIterable } from './asyncIterable.js';
+import { handleCommandStream } from './commandStream.js';
 import { BackendService } from './gen/dev/spy/agent/v1/agent_pb.js';
 import { launch } from './launcher.js';
-import { DebugSession } from './session.js';
+import { DebugSession } from './debugger.js';
 import { CommandHandlers, SpyDevConfig, SpyDevMetadata } from './types.js';
 import { exponentialBackoff } from './util.js';
-
-if (/*isMainThread || */ workerData?.spyDevConfig != null) {
-  const config = workerData.spyDevConfig as SpyDevConfig;
-  const metadata = workerData.spyDevMetadata as SpyDevMetadata;
-  runAgent(config, metadata);
-}
 
 /**
  * Initialize the spy.dev agent.
@@ -26,14 +21,22 @@ export function init(config: SpyDevConfig) {
     return;
   }
 
-  if (/*isMainThread || */ workerData?.isSpyDevAgent == null) {
+  if (/* isMainThread || */ workerData?.isSpyDevAgent == null) {
     launch(config, {
       argv: process.argv,
     });
   }
 }
 
-async function runAgent(config: SpyDevConfig, metadata: SpyDevMetadata) {
+export async function runAgent(config: SpyDevConfig, metadata: SpyDevMetadata) {
+  process.on('unhandledRejection', (err) => {
+    console.error('Unhandled rejection', err);
+  });
+
+  process.on('uncaughtException', (err) => {
+    console.error('Uncaught exception', err);
+  });
+
   parentPort?.on('message', () => {}); // stop worker from dying early
 
   const MAX_RETRY_COUNT = 10;
@@ -100,7 +103,10 @@ async function runOnce(
       };
     },
     addLogpoint: async ({ scriptId, line }) => {
-      const { actualLocation, breakpointId } = await session.addLogpoint(scriptId, line);
+      const { actualLocation, breakpointId } = await session.addLogpoint(
+        scriptId,
+        line,
+      );
       return {
         $typeName: 'dev.spy.agent.v1.AddLogpointResponse',
         breakpointId,
@@ -120,5 +126,22 @@ async function runOnce(
     },
   };
 
-  await connectToServer(client, headers, handlers);
+  const commandStream = handleCommandStream(client, headers, handlers);
+  const logpointHits = client.logpointHits(
+    mapAsyncIterable(
+      eventToAsyncIterable(session.events, 'logpointHit'),
+      (hit) => ({
+        $typeName: 'dev.spy.agent.v1.LogpointHitsRequest',
+        hit: {
+          $typeName: 'dev.spy.shared.v1.LogpointHit',
+          breakpointId: hit.breakpointIds,
+          vars: JSON.stringify(hit.vars),
+          time: hit.time,
+        },
+      }),
+    ),
+    { headers },
+  );
+
+  await Promise.all([commandStream, logpointHits]);
 }

@@ -32,16 +32,6 @@ export async function exponentialBackoff(
         throw err;
       }
 
-      if (err instanceof ConnectError) {
-        // these errors are not retryable
-        if (
-          err.code === Code.Unauthenticated ||
-          err.code === Code.InvalidArgument
-        ) {
-          throw err;
-        }
-      }
-
       console.log(
         `Retrying in ${getBackoffDelay(retries)}ms (attempt ${retries + 1})`,
       );

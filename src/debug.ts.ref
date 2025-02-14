@@ -1,13 +1,24 @@
 import assert from 'node:assert';
-import EventEmitter from 'node:events';
 import { Debugger, Runtime, Session } from 'node:inspector/promises';
 import { inspect } from 'node:util';
 import { isMainThread, parentPort, Worker, workerData } from 'node:worker_threads';
 
+import EventEmitter from 'node:events';
+import WebSocket from 'ws';
+
 console.log(
-  `🍱 Running in ${isMainThread ? 'Main thread' : 'Worker thread'} process[${process.title}]\n
+  `🍱 Running in ${isMainThread ? 'Main thread' : 'Worker thread'} argv[${process.argv}] process[${process.title}]\n
   agent[${workerData?.isDebugSdkWorker}] id[${workerData?.id}]`,
 );
+
+declare global {
+  // eslint-disable-next-line @typescript-eslint/no-namespace
+  namespace NodeJS {
+    interface Process {
+      _rawDebug: (message?: any, ...optionalParams: any[]) => void;
+    }
+  }
+}
 
 type HttpTrace = {
   time: string;
@@ -40,6 +51,10 @@ if (isMainThread || workerData?.isDebugSdkWorker == null) {
   const logpoints = new Map<string, Debugger.SetBreakpointReturnType>();
 
   let httpTracingOn = false;
+
+  events.on('logpointHit', (data) => {
+    ws.send(JSON.stringify({ type: 'logpointHit', data }));
+  });
 
   ws.on('message', (data: unknown) => {
     assert(data instanceof Buffer);
@@ -100,6 +115,7 @@ if (isMainThread || workerData?.isDebugSdkWorker == null) {
           requestId,
           actualLocation: lp.actualLocation,
           breakpointId: lp.breakpointId,
+          active: true,
         }),
       );
     } else {
@@ -109,6 +125,21 @@ if (isMainThread || workerData?.isDebugSdkWorker == null) {
           breakpointId: bp.breakpointId,
         });
         logpoints.delete(`${scriptId}:${line}`);
+        ws.send(
+          JSON.stringify({
+            type: 'logpoint',
+            requestId,
+            breakpointId: bp.breakpointId,
+            active: false,
+          }),
+        );
+      } else {
+        ws.send(
+          JSON.stringify({
+            type: 'error',
+            error: 'Logpoint not found',
+          }),
+        );
       }
     }
   }
@@ -172,7 +203,10 @@ if (isMainThread || workerData?.isDebugSdkWorker == null) {
   async function access(obj: Runtime.GetPropertiesReturnType, field: string) {
     const prop = obj.result.find((prop) => prop.name === field);
     if (prop && prop.value?.objectId) {
-      return await session.post('Runtime.getProperties', { objectId: prop.value.objectId, ownProperties: true });
+      return await session.post('Runtime.getProperties', {
+        objectId: prop.value.objectId,
+        ownProperties: true,
+      });
     }
     return null;
   }
@@ -185,24 +219,28 @@ if (isMainThread || workerData?.isDebugSdkWorker == null) {
     return null;
   }
 
-  async function fetchEntireObject(obj: Runtime.RemoteObjectId): Promise<object> {
+  async function fetchEntireObject(obj: Runtime.RemoteObject): Promise<object> {
+    if (obj.objectId == null) {
+      return {};
+    }
+
     const props = await session.post('Runtime.getProperties', {
-      objectId: obj,
+      objectId: obj.objectId,
       ownProperties: true,
     });
 
-    const res: Record<string, unknown> = {};
+    const result: any = obj.subtype === 'array' ? [] : {};
 
     for (const prop of props.result) {
       // eslint-disable-next-line unicorn/prefer-ternary
       if (prop.value?.objectId) {
-        res[prop.name] = await fetchEntireObject(prop.value.objectId);
+        result[prop.name] = await fetchEntireObject(prop.value);
       } else {
-        res[prop.name] = prop.value?.value;
+        result[prop.name] = prop.value?.value;
       }
     }
 
-    return res;
+    return result;
   }
 
   // eslint-disable-next-line @typescript-eslint/no-misused-promises
@@ -258,14 +296,15 @@ if (isMainThread || workerData?.isDebugSdkWorker == null) {
         assert(localScope.type === 'local');
         assert(localScope.object?.objectId);
 
-        const obj = await fetchEntireObject(localScope.object.objectId);
+        const obj = await fetchEntireObject(localScope.object);
 
         console.log('local scope:', inspect(obj, { depth: null, colors: true }));
 
-        events.emit('logpoint', {
+        events.emit('logpointHit', {
+          id: Math.random().toString(36).slice(2),
           time: new Date().toISOString(),
           breakpointIds: msg.params.hitBreakpoints,
-          data: obj,
+          vars: obj,
         });
       }
 

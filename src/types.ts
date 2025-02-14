@@ -4,7 +4,7 @@ import {
   CommandStreamResponse,
 } from './gen/dev/spy/agent/v1/agent_pb.js';
 
-// TODO: remove this?
+// process._rawDebug should be used instead of console.log when paused
 declare global {
   namespace NodeJS {
     interface Process {

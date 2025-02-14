@@ -10,7 +10,7 @@ import type { Message } from "@bufbuild/protobuf";
  * Describes the file dev/spy/shared/v1/shared.proto.
  */
 export const file_dev_spy_shared_v1_shared: GenFile = /*@__PURE__*/
-  fileDesc("Ch5kZXYvc3B5L3NoYXJlZC92MS9zaGFyZWQucHJvdG8SEWRldi5zcHkuc2hhcmVkLnYxIiwKClNvdXJjZUZpbGUSEQoJc2NyaXB0X2lkGAEgASgJEgsKA3VybBgCIAEoCSJJCghMb2NhdGlvbhIRCglzY3JpcHRfaWQYASABKAkSEwoLbGluZV9udW1iZXIYAiABKAUSFQoNY29sdW1uX251bWJlchgDIAEoBWIGcHJvdG8z");
+  fileDesc("Ch5kZXYvc3B5L3NoYXJlZC92MS9zaGFyZWQucHJvdG8SEWRldi5zcHkuc2hhcmVkLnYxIiwKClNvdXJjZUZpbGUSEQoJc2NyaXB0X2lkGAEgASgJEgsKA3VybBgCIAEoCSJJCghMb2NhdGlvbhIRCglzY3JpcHRfaWQYASABKAkSEwoLbGluZV9udW1iZXIYAiABKAUSFQoNY29sdW1uX251bWJlchgDIAEoBSJACgtMb2dwb2ludEhpdBIVCg1icmVha3BvaW50X2lkGAEgAygJEgwKBHZhcnMYAiABKAkSDAoEdGltZRgDIAEoCWIGcHJvdG8z");
 
 /**
  * @generated from message dev.spy.shared.v1.SourceFile
@@ -60,4 +60,35 @@ export type Location = Message<"dev.spy.shared.v1.Location"> & {
  */
 export const LocationSchema: GenMessage<Location> = /*@__PURE__*/
   messageDesc(file_dev_spy_shared_v1_shared, 1);
+
+/**
+ * @generated from message dev.spy.shared.v1.LogpointHit
+ */
+export type LogpointHit = Message<"dev.spy.shared.v1.LogpointHit"> & {
+  /**
+   * @generated from field: repeated string breakpoint_id = 1;
+   */
+  breakpointId: string[];
+
+  /**
+   * json object
+   *
+   * @generated from field: string vars = 2;
+   */
+  vars: string;
+
+  /**
+   * iso8601
+   *
+   * @generated from field: string time = 3;
+   */
+  time: string;
+};
+
+/**
+ * Describes the message dev.spy.shared.v1.LogpointHit.
+ * Use `create(LogpointHitSchema)` to create a new message.
+ */
+export const LogpointHitSchema: GenMessage<LogpointHit> = /*@__PURE__*/
+  messageDesc(file_dev_spy_shared_v1_shared, 2);
 

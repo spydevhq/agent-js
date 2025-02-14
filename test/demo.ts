@@ -8,7 +8,14 @@ spyDev.init({
   baseUrl: 'https://localhost:4000',
 });
 
+function go() {
+  let obj: any = {};
+  obj.recurseMe = obj;
+  return 1;
+}
+
 const server = http.createServer((req, res) => {
+  go();
   res.end('Hello, world!');
 });
 

@@ -9,7 +9,7 @@
   "scripts": {
     "generate": "buf generate",
     "build": "rm -rf dist && tsc",
-    "dev": "pnpm run build && node dist/test/demo.js",
+    "dev": "rm -rf dist && tsc && node dist/test/demo.js",
     "format:write": "prettier --write \"**/*.{ts,tsx,js,jsx,mdx}\" --cache",
     "format:check": "prettier --check \"**/*.{ts,tsx,js,jsx,mdx}\" --cache"
   },

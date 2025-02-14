@@ -8,12 +8,13 @@ import {
 import { CommandHandlers } from './types.js';
 import { exponentialBackoff } from './util.js';
 
-async function handleCommandStream(
+async function run(
   client: Client<typeof BackendService>,
   headers: Headers,
   handlers: CommandHandlers,
-  events: EventEmitter<{ response: [CommandStreamResponse] }>,
 ) {
+  const events = new EventEmitter<{ response: [CommandStreamResponse] }>();
+
   // upload responses
   const stream = client.commandStream(
     (async function* uploadCommands() {
@@ -25,6 +26,8 @@ async function handleCommandStream(
     })(),
     { headers },
   );
+
+  console.log('Successfully connected to server');
 
   // download commands
   for await (const req of stream) {
@@ -42,7 +45,7 @@ async function handleCommandStream(
         response: {
           case: undefined,
           value: undefined,
-        }
+        },
       });
       continue;
     }
@@ -67,14 +70,12 @@ async function handleCommandStream(
   }
 }
 
-export async function connectToServer(
+export async function handleCommandStream(
   client: Client<typeof BackendService>,
   headers: Headers,
   handlers: CommandHandlers,
 ): Promise<void> {
-  const events = new EventEmitter<{ response: [CommandStreamResponse] }>();
-
   await exponentialBackoff(async () => {
-    await handleCommandStream(client, headers, handlers, events);
+    await run(client, headers, handlers);
   });
 }
