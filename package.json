@@ -4,6 +4,13 @@
   "main": "./dist/src/index.cjs",
   "module": "./dist/src/index.mjs",
   "types": "./dist/src/index.d.cts",
+  "exports": {
+    ".": {
+      "require": "./dist/src/index.cjs",
+      "import": "./dist/src/index.mjs",
+      "types": "./dist/src/index.d.cts"
+    }
+  },
   "files": [
     "dist"
   ],
