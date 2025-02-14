@@ -21,7 +21,7 @@ export function init(config: SpyDevConfig) {
     return;
   }
 
-  if (/* isMainThread || */ workerData?.isSpyDevAgent == null) {
+  if (workerData?.isSpyDevAgent == null) {
     launch(config, {
       argv: process.argv,
     });

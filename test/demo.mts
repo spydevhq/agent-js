@@ -1,5 +1,5 @@
 import http from 'node:http';
-import spyDev from '../src/index.js';
+import spyDev from '../src/index.mjs';
 
 spyDev.init({
   appName: 'demo-app',

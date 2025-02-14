@@ -3,7 +3,7 @@ import { runAgent } from './agent.js';
 import { SpyDevConfig, SpyDevMetadata } from './types.js';
 
 export function launch(config: SpyDevConfig, metadata: SpyDevMetadata) {
-  const worker = new Worker(new URL('./launcher.js', import.meta.url), {
+  const worker = new Worker(__dirname + '/launcher.js', {
     workerData: { spyDevConfig: config, spyDevMetadata: metadata },
   });
 
@@ -13,7 +13,7 @@ export function launch(config: SpyDevConfig, metadata: SpyDevMetadata) {
 }
 
 // This is the entrypoint for the worker
-if (/* !isMainThread || */ workerData?.spyDevConfig != null) {
+if (workerData?.spyDevConfig != null) {
   const config = workerData.spyDevConfig as SpyDevConfig;
   const metadata = workerData.spyDevMetadata as SpyDevMetadata;
   runAgent(config, metadata);
