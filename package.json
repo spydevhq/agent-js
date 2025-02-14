@@ -1,6 +1,6 @@
 {
   "name": "@spy.dev/agent-js",
-  "version": "0.0.3",
+  "version": "0.0.4",
   "main": "./dist/src/index.cjs",
   "module": "./dist/src/index.mjs",
   "types": "./dist/src/index.d.cts",
