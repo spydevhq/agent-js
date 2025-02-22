@@ -82,7 +82,10 @@ export class DebugSession {
     }
   }
 
-  private async fetchEntireObject(obj: Runtime.RemoteObject, depth = 0): Promise<object> {
+  private async fetchEntireObject(
+    obj: Runtime.RemoteObject,
+    depth = 0,
+  ): Promise<object> {
     if (obj.objectId == null) {
       return {};
     }
@@ -97,10 +100,14 @@ export class DebugSession {
 
     for (const prop of props.result) {
       if (prop.value?.type === 'function') {
-        result[prop.name] = '<function>'; 
-      } else if (prop.value?.objectId) { // TODO: support deeper properties, on demand
+        result[prop.name] = '<function>';
+      } else if (prop.value?.objectId) {
+        // TODO: support deeper properties, on demand
         if (depth < 5) {
-          result[prop.name] = await this.fetchEntireObject(prop.value, depth + 1);
+          result[prop.name] = await this.fetchEntireObject(
+            prop.value,
+            depth + 1,
+          );
         } else {
           result[prop.name] = '<object>';
         }

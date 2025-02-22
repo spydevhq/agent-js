@@ -3,9 +3,9 @@ import { createConnectTransport } from '@connectrpc/connect-node';
 import { parentPort, workerData } from 'node:worker_threads';
 import { eventToAsyncIterable, mapAsyncIterable } from './asyncIterable.js';
 import { handleCommandStream } from './commandStream.js';
+import { DebugSession } from './debugger.js';
 import { BackendService } from './gen/dev/spy/agent/v1/agent_pb.js';
 import { launch } from './launcher.js';
-import { DebugSession } from './debugger.js';
 import { CommandHandlers, SpyDevConfig, SpyDevMetadata } from './types.js';
 import { exponentialBackoff } from './util.js';
 
