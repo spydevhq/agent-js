@@ -21,6 +21,14 @@ export function init(config: SpyDevConfig) {
     return;
   }
 
+  if (!config.accessToken) {
+    throw new Error('spy.dev: access token is required');
+  }
+
+  if (!config.appName) {
+    throw new Error('spy.dev: app name is required');
+  }
+
   if (workerData?.isSpyDevAgent == null) {
     launch(config, {
       argv: process.argv,
